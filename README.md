@@ -1,10 +1,7 @@
 
 # rsync Remote Backup for HomeAssistant
 
-[![GitHub license][license-shield]](LICENSE.md)
-
 Automatically create HomeAssistant snapshots and backup to remote server using `rsync`.
-
 
 ## Table of Contents
 
