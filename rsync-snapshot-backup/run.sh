@@ -1,0 +1,59 @@
+#!/bin/bash
+set -e
+
+CONFIG_PATH=/data/options.json
+
+# parse inputs from options
+RSYNC_HOST=$(jq --raw-output ".rsync_host" $CONFIG_PATH)
+RSYNC_USER=$(jq --raw-output ".rsync_user" $CONFIG_PATH)
+RSYNC_PASSWORD=$(jq --raw-output ".rsync_password" $CONFIG_PATH)
+REMOTE_DIRECTORY=$(jq --raw-output ".remote_directory" $CONFIG_PATH)
+SNAPSHOT_PASSWORD=$(jq --raw-output '.snapshot_password' $CONFIG_PATH)
+KEEP_LOCAL_BACKUP=$(jq --raw-output '.keep_local_backup' $CONFIG_PATH)
+
+echo "[INFO] Starting rsync Snapshot Backup..."
+
+function create-local-backup {
+    name="Automated Backup $(date +'%Y-%m-%d %H:%M')"
+	if [[ -z $SNAPSHOT_PASSWORD  ]]; then
+		echo "[INFO] Creating local backup: \"${name}\""
+		slug=$(ha snapshots new --raw-json --name="${name}" | jq --raw-output '.data.slug')
+	else
+		echo "[INFO] Creating local backup with password: \"${name}\""
+		slug=$(ha snapshots new --raw-json --name="${name}" --password="${SNAPSHOT_PASSWORD}" | jq --raw-output '.data.slug')
+	fi
+    echo "[INFO] Backup created: ${slug}"
+}
+
+function copy-backup-to-remote {
+	rsyncurl="$RSYNC_USER@$RSYNC_HOST::$REMOTE_DIRECTORY"
+	echo "[INFO] Copying ${slug}.tar to ${REMOTE_DIRECTORY} on ${RSYNC_HOST} using rsync"
+	sshpass -p $RSYNC_PASSWORD rsync -av /backup/ $rsyncurl
+}
+
+function delete-local-backup {
+    ha snapshots reload
+    if [[ ${KEEP_LOCAL_BACKUP} == "all" ]]; then
+        :
+    elif [[ -z ${KEEP_LOCAL_BACKUP} ]]; then
+        echo "[INFO] Deleting local backup: ${slug}"
+        ha snapshots remove "${slug}"
+    else
+        last_date_to_keep=$(ha snapshots list --raw-json | jq .data.snapshots[].date | sort -r | \
+            head -n "${KEEP_LOCAL_BACKUP}" | tail -n 1 | xargs date -D "%Y-%m-%dT%T" +%s --date )
+
+        ha snapshots list --raw-json | jq -c .data.snapshots[] | while read backup; do
+            if [[ $(echo ${backup} | jq .date | xargs date -D "%Y-%m-%dT%T" +%s --date ) -lt ${last_date_to_keep} ]]; then
+                echo "[INFO] Deleting local backup: $(echo ${backup} | jq -r .slug)"
+                ha snapshots remove "$(echo ${backup} | jq -r .slug)"
+            fi
+        done
+    fi
+}
+
+create-local-backup
+copy-backup-to-remote
+delete-local-backup
+
+echo "[INFO] Backup process done!"
+exit 0

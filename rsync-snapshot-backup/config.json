@@ -1,0 +1,35 @@
+{
+  "name": "rsync Snapshot Backup",
+  "version": "1.0.0",
+  "slug": "rsync_snapshot_backup",
+  "description": "Automatically create HomeAssistant snapshots and backup to remote server using rsync",
+  "url": "https://github.com/Sarabveer/rsync-snapshot-backup/tree/master/README.md",
+  "startup": "once",
+  "boot": "manual",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "armv7",
+    "i386"
+  ],
+  "hassio_api": true,
+  "hassio_role": "backup",
+  "map": ["backup:rw"],
+  "options": {
+    "rsync_host": "",
+    "rsync_user": "",
+    "rsync_password": "",
+    "remote_directory": "",
+    "snapshot_password": "",
+    "keep_local_backup": ""
+  },
+  "schema": {
+    "rsync_host": "str",
+    "rsync_user": "str",
+    "rsync_password": "str",
+    "remote_directory": "str",
+    "snapshot_password": "str",
+    "keep_local_backup": "match(^(all|[+]?\\d*)$)"
+  }
+}
