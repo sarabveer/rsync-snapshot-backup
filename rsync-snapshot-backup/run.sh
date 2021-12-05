@@ -5,12 +5,14 @@ CONFIG_PATH=/data/options.json
 
 # parse inputs from options
 RSYNC_HOST=$(jq --raw-output ".rsync_host" $CONFIG_PATH)
-SSHPASS=$(jq --raw-output ".rsync_user" $CONFIG_PATH)
+RSYNC_USER=$(jq --raw-output ".rsync_user" $CONFIG_PATH)
 RSYNC_PASSWORD=$(jq --raw-output ".rsync_password" $CONFIG_PATH)
 REMOTE_DIRECTORY=$(jq --raw-output ".remote_directory" $CONFIG_PATH)
 SNAPSHOT_PASSWORD=$(jq --raw-output '.snapshot_password' $CONFIG_PATH)
 KEEP_LOCAL_BACKUP=$(jq --raw-output '.keep_local_backup' $CONFIG_PATH)
 SSH_PORT=$(jq --raw-output '.SSH_port' $CONFIG_PATH)
+
+export SSHPASS=RSYNC_PASSWORD
 
 echo "[INFO] Starting rsync Snapshot Backup..."
 
