@@ -26,7 +26,7 @@ function create-local-backup {
 }
 
 function copy-backup-to-remote {
-	rsyncurl="$RSYNC_USER@$RSYNC_HOST::$REMOTE_DIRECTORY"
+	rsyncurl="$RSYNC_USER@$RSYNC_HOST:$REMOTE_DIRECTORY"
 	echo "[INFO] Copying ${slug}.tar to ${REMOTE_DIRECTORY} on ${RSYNC_HOST} using rsync"
 	sshpass -p $RSYNC_PASSWORD rsync -av /backup/ $rsyncurl --ignore-existing
 }
