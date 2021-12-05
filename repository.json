@@ -1,5 +1,5 @@
 {
   "name": "HA rsync Snapshot Backup",
-  "url": "https://github.com/Sarabveer/rsync-snapshot-backup",
-  "maintainer": "Sarabveer Singh <me@sarabveer.me>"
+  "url": "https://github.com/Baptiste-Leterrier/rsync-snapshot-backup",
+  "maintainers": "Baptiste Leterrier <bleterrier@pm.me>"
 }
