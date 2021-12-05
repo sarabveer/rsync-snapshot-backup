@@ -3,7 +3,7 @@
   "version": "1.0.1.2",
   "slug": "rsync_snapshot_backup",
   "description": "Automatically create HomeAssistant snapshots and backup to remote server using rsync",
-  "url": "https://github.com/Sarabveer/rsync-snapshot-backup/tree/master/README.md",
+  "url": "https://github.com/Baptiste-Leterrier/rsync-snapshot-backup/tree/master/README.md",
   "startup": "once",
   "boot": "manual",
   "arch": [
