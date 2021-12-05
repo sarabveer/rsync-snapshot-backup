@@ -2,6 +2,7 @@
 # rsync Remote Backup for HomeAssistant
 
 Automatically create HomeAssistant snapshots and backup to remote server using `rsync`.
+From the work of https://github.com/Sarabveer/rsync-snapshot-backup
 
 ## Table of Contents
 
