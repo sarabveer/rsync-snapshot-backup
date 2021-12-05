@@ -12,7 +12,7 @@ SNAPSHOT_PASSWORD=$(jq --raw-output '.snapshot_password' $CONFIG_PATH)
 KEEP_LOCAL_BACKUP=$(jq --raw-output '.keep_local_backup' $CONFIG_PATH)
 SSH_PORT=$(jq --raw-output '.SSH_port' $CONFIG_PATH)
 
-export SSHPASS=RSYNC_PASSWORD
+export SSHPASS=${RSYNC_PASSWORD}
 
 echo "[INFO] Starting rsync Snapshot Backup..."
 
