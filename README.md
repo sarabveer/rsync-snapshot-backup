@@ -20,11 +20,11 @@ When the add-on is started the following happens:
 
 _Note_ the filenames of the backup are given by their assigned slug.
 
-This was tested using `rsync` on a Synology NAS.
+This was tested using `rsync` on a HAOS on Raspberry Pi 3 (64bits).
 
 ## Installation
 
-1. Add the addon repository to your HomeAssistant instance: `https://github.com/Sarabveer/rsync-snapshot-backup`.
+1. Add the addon repository to your HomeAssistant instance: `https://github.com/Baptiste-Leterrier/rsync-snapshot-backup`.
 1. Install the rsync Remote Backup addon.
 1. Configure the add-on with your rsync credentials and desired output directory
 (see configuration below).
