@@ -24,14 +24,16 @@ function create-local-backup {
 	else
 		echo "[INFO] Creating local backup with password: \"${name}\""
 		slug=$(ha backups new --raw-json --name="${name}" --password="${SNAPSHOT_PASSWORD}" | jq --raw-output '.data.slug')
+		backup_name=$(ha backups new --raw-json --name="${name}" --password="${SNAPSHOT_PASSWORD}" | jq --raw-output '.data.name')
 	fi
     echo "[INFO] Backup created: ${slug}"
 }
 
 function copy-backup-to-remote {
 	rsyncurl="$RSYNC_USER@$RSYNC_HOST:$REMOTE_DIRECTORY"
-	echo "[INFO] Copying ${slug}.tar to ${REMOTE_DIRECTORY} on ${RSYNC_HOST} using rsync"
+	echo "[INFO] Copying ${backup_name} to ${REMOTE_DIRECTORY} on ${RSYNC_HOST} using rsync. Slug is ${slug}"
 	sshpass -e rsync -av -e "ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no" /backup/ $rsyncurl --ignore-existing
+	
 }
 
 function delete-local-backup {
