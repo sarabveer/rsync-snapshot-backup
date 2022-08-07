@@ -6,8 +6,10 @@ Automatically create HomeAssistant snapshots and backup to remote server using `
 
 ## Table of Contents
 
-* [Configuration](#configuration)
-* [Example](#example)
+- [rsync Remote Backup](#rsync-remote-backup)
+  - [Table of Contents](#table-of-contents)
+  - [Configuration](#configuration)
+  - [Example](#example)
 
 ## Configuration
 
@@ -17,9 +19,9 @@ Automatically create HomeAssistant snapshots and backup to remote server using `
 |`rsync_user`|Yes|Username to use for `rsync`.|
 |`rsync_password`|Yes|Password to use for `rsync`.|
 |`remote_directory`|Yes|The directory to put the backups on the remote server.<br />For example, on a Synology NAS, this would be the name of the Share.|
+|`keep_local_backup`|Yes|Control how many local backups you want to preserve.<br />- Default (`""`) is to keep no local backups created from this addon.<br />- If `all` then all local backups will be preserved.<br />- A positive integer will determine how many of the latest backups will be preserved. Note this will delete other local backups created outside this addon.|
 |`snapshot_password`|No|If set, the snapshot will generate with a password.|
-|`keep_local_backup`|No|Control how many local backups you want to preserve.<br />- Default (`""`) is to keep no local backups created from this addon.<br />- If `all` then all local backups will be preserved.<br />- A positive integer will determine how many of the latest backups will be preserved. Note this will delete other local backups created outside this addon.|
-
+|`supervisor_token`|No|Set custom `SUPERVISOR_TOKEN` environment variable if logs show 401 Unauthorized error.|
 
 ## Example
 
@@ -44,8 +46,7 @@ rsync_host: 192.168.1.2
 rsync_user: hass
 rsync_password: 'some_password'
 remote_directory: 'homeassistant'
-snapshot_password: ''
 keep_local_backup: 2
 ```
 
-**Note**: _This is just an example, don't copy and past it! Create your own!_
+**Note**: _This is just an example, don't copy and paste it! Create your own!_
