@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 CONFIG_PATH=/data/options.json
@@ -10,6 +11,11 @@ RSYNC_PASSWORD=$(jq --raw-output ".rsync_password" $CONFIG_PATH)
 REMOTE_DIRECTORY=$(jq --raw-output ".remote_directory" $CONFIG_PATH)
 SNAPSHOT_PASSWORD=$(jq --raw-output '.snapshot_password' $CONFIG_PATH)
 KEEP_LOCAL_BACKUP=$(jq --raw-output '.keep_local_backup' $CONFIG_PATH)
+
+token=$(jq --raw-output '.supervisor_token' $CONFIG_PATH)
+if [[ -n "$token" ]]; then
+    export SUPERVISOR_TOKEN=$token
+fi
 
 echo "[INFO] Starting rsync Snapshot Backup..."
 
@@ -39,10 +45,10 @@ function delete-local-backup {
         echo "[INFO] Deleting local backup: ${slug}"
         ha backups remove "${slug}"
     else
-        last_date_to_keep=$(ha backups list --raw-json | jq .data.snapshots[].date | sort -r | \
+        last_date_to_keep=$(ha backups list --raw-json | jq ".data.backups[].date" | sort -r | \
             head -n "${KEEP_LOCAL_BACKUP}" | tail -n 1 | xargs date -D "%Y-%m-%dT%T" +%s --date )
 
-        ha backups list --raw-json | jq -c .data.snapshots[] | while read backup; do
+        ha backups list --raw-json | jq -c ".data.backups[]" | while read backup; do
             if [[ $(echo ${backup} | jq .date | xargs date -D "%Y-%m-%dT%T" +%s --date ) -lt ${last_date_to_keep} ]]; then
                 echo "[INFO] Deleting local backup: $(echo ${backup} | jq -r .slug)"
                 ha backups remove "$(echo ${backup} | jq -r .slug)"
