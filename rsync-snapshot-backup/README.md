@@ -16,9 +16,10 @@ Automatically create HomeAssistant snapshots and backup to remote server using `
 |Parameter|Required|Description|
 |---------|--------|-----------|
 |`rsync_host`|Yes|The hostname/url to the rsync server.|
+|`ssh_port`|Yes|The SSH port on the rsync server.|
 |`rsync_user`|Yes|Username to use for `rsync`.|
 |`rsync_password`|Yes|Password to use for `rsync`.|
-|`remote_directory`|Yes|The directory to put the backups on the remote server.<br />For example, on a Synology NAS, this would be the name of the Share.|
+|`remote_directory`|Yes|The directory to put the backups on the remote server.<br />For example, on a Synology NAS, this would be `/volume<X>/<shareName>`.|
 |`keep_local_backup`|Yes|Control how many local backups you want to preserve.<br />- Default (`""`) is to keep no local backups created from this addon.<br />- If `all` then all local backups will be preserved.<br />- A positive integer will determine how many of the latest backups will be preserved. Note this will delete other local backups created outside this addon.|
 |`snapshot_password`|No|If set, the snapshot will generate with a password.|
 |`supervisor_token`|No|Set custom `SUPERVISOR_TOKEN` environment variable if logs show 401 Unauthorized error.|

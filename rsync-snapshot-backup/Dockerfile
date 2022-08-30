@@ -2,7 +2,7 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 # Setup base
-RUN apk add --no-cache jq sshpass rsync
+RUN apk add --no-cache jq sshpass rsync openssh
 
 # Hass.io CLI
 ARG BUILD_ARCH
