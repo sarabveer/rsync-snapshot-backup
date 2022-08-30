@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.3] - 2022-08-30xw
+### Added
+- Use custom SSH port for rsync with `ssh_port` setting.
+
 ## [1.0.2] - 2022-08-07
 ### Fixed
 - Update to use `ha backups` command
